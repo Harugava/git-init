@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trochoid Animation</title>
+    <style>
+        /* Общий стиль страницы */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #4facfe, #00f2fe);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        /* Стиль формы */
+        form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .help-button {
+            margin-top: 10px;
+            background-color: #28a745;
+        }
+
+        .help-button:hover {
+            background-color: #1e7e34;
+        }
+
+        /* Блок для анимации или сообщения */
+        .animation-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        p {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .help-text {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            max-width: 400px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .help-text.active {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            form {
+                padding: 15px 20px;
+            }
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Trochoid Animation</h1>
+    <form method="POST">
+        <label for="R">Введите радиус окружности (R):</label>
+        <input type="number" step="0.1" id="R" name="R" placeholder="Например: 10" required>
+
+        <label for="h">Введите расстояние от центра окружности (h):</label>
+        <input type="number" step="0.1" id="h" name="h" placeholder="Например: 5" required>
+
+        <button type="submit">Построить анимацию</button>
+        <button type="button" class="help-button" onclick="toggleHelp()">Справка</button>
+    </form>
+
+    <div class="help-text" id="help-text">
+        <p><strong>Справка:</strong></p>
+        <p>Трохоидой называется кривая, описываемая точкой, связанной с окружностью, которая катится без проскальзывания.
+        Введите радиус окружности (R) и расстояние от её центра (h), чтобы построить анимацию.
+        Убедитесь, что значения корректны и нажмите "Построить анимацию".
+        Если точка находится на окружности, то трохоида переходит в циклоиду.
+        Если точка находится вне окружности, то трохоида принимает вытянутую форму, ее называют удлинённой циклоидой.
+        Если точка находится внутри окружности, то трохоида становится сжатой - укороченной циклоидой.</p>
+    </div>
+
+    {% if graph_html %}
+    <div class="animation-container">
+        <h3>Анимация трохоиды:</h3>
+        <img src="data:image/gif;base64,{{ graph_html }}" alt="Trochoid Animation">
+    </div>
+    {% else %}
+    {% endif %}
+
+    <script>
+        function toggleHelp() {
+            const helpText = document.getElementById('help-text');
+            helpText.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
